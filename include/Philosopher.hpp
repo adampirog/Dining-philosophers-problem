@@ -6,6 +6,7 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
+#include <ncurses.h>
 
 class Philosopher
 {
@@ -18,9 +19,11 @@ private:
 
 public:
     Philosopher(int ID, Fork &l, Fork &r);
+    ~Philosopher();
     void think();
     void eat();
     void dine();
+    const char *getName();
 
-    void print(std::string text);
+    void print(bool state);
 };
