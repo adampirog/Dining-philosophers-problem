@@ -1,5 +1,9 @@
 #pragma once
+#include <mutex>
 
-class Fork {
-
+class Fork
+{
+public:
+    int forkID;
+    std::mutex mutex;
 };
