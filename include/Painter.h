@@ -13,7 +13,7 @@ public:
 	Painter(int n, Philosopher **philosopher, Fork **fork);
 	~Painter();
 
-	void init();
+	void init_colors();
 	void draw();
 	void drawFrame();
 	void drawPhilosophers();

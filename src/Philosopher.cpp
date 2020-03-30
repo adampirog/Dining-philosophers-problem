@@ -108,7 +108,7 @@ void Philosopher::setState(int state)
 	this->state = state;
 }
 
-//0 rozmysla, 1 je, 2 czeka na widelce, 3 otrzymal lewy, 4 otrzymal prawy
+//0 filozofuje, 1 je, 2 czeka
 void Philosopher::lifeCycle()
 {
 	srand(time(NULL));
@@ -123,7 +123,7 @@ void Philosopher::lifeCycle()
 		int eMu = (int)(eatingMargin * 50000);
 
 		state = 0;
-		for (int i = 0; i < 20; i++)
+		for (int i = 0; i < 21; i++)
 		{
 			float time = pT + pMd - pMu;
 			time /= 1000000;
@@ -137,7 +137,7 @@ void Philosopher::lifeCycle()
 		state = 2;
 		takeForks();
 		state = 1;
-		for (int i = 0; i < 20; i++)
+		for (int i = 0; i < 21; i++)
 		{
 			usleep(eT + eMd - eMu);
 			progress++;

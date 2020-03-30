@@ -11,7 +11,7 @@ Painter::Painter(int nPhils, Philosopher **philosopher, Fork **fork)
 	this->fork = fork;
 
 	initscr();
-	init();
+	init_colors();
 	noecho();
 	curs_set(0);
 }
@@ -21,7 +21,7 @@ Painter::~Painter()
 	endwin();
 }
 
-void Painter::init()
+void Painter::init_colors()
 {
 	start_color();
 	init_pair(1, COLOR_WHITE, COLOR_RED);
@@ -57,10 +57,10 @@ void Painter::draw()
 void Painter::drawFrame()
 {
 
-	move(1, 15);
-	printw("Filozofowie:");
-	move(1, 50);
-	printw("Widelce:");
+	move(1, 37);
+	printw("Filozofowie");
+	move(1, 60);
+	printw("Widelce");
 
 	for (int i = 0; i < nPhils; i++)
 	{
