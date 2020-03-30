@@ -1,5 +1,6 @@
 #include "Philosopher.h"
 #include <unistd.h>
+#include <ncurses.h>
 
 using namespace std;
 
@@ -124,6 +125,11 @@ void Philosopher::lifeCycle()
 		state = 0;
 		for (int i = 0; i < 20; i++)
 		{
+			float time = pT + pMd - pMu;
+			time /= 1000000;
+			//move(0, 0);
+			//printw("%.6f", time);
+
 			usleep(pT + pMd - pMu);
 			progress++;
 		}

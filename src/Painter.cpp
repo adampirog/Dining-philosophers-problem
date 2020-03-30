@@ -11,9 +11,9 @@ Painter::Painter(int nPhils, Philosopher **philosopher, Fork **fork)
 	this->fork = fork;
 
 	initscr();
+	init();
 	noecho();
 	curs_set(0);
-	init();
 }
 
 Painter::~Painter()
@@ -24,14 +24,13 @@ Painter::~Painter()
 void Painter::init()
 {
 	start_color();
-	init_pair(1, COLOR_WHITE, COLOR_BLACK);
-	init_pair(2, COLOR_GREEN, COLOR_BLACK);
-	init_pair(3, COLOR_RED, COLOR_BLACK);
-	init_pair(4, COLOR_BLUE, COLOR_BLUE);
-	init_pair(5, COLOR_YELLOW, COLOR_YELLOW);
-	init_pair(6, COLOR_CYAN, COLOR_BLACK);
-
-	//bkgd(COLOR_PAIR(1));
+	init_pair(1, COLOR_WHITE, COLOR_RED);
+	init_pair(2, COLOR_WHITE, COLOR_GREEN);
+	init_pair(3, COLOR_WHITE, COLOR_BLUE);
+	init_pair(4, COLOR_WHITE, COLOR_CYAN);
+	init_pair(5, COLOR_WHITE, COLOR_MAGENTA);
+	init_pair(7, COLOR_WHITE, COLOR_BLACK);
+	init_pair(6, COLOR_BLACK, COLOR_WHITE);
 }
 
 void Painter::draw()
@@ -65,18 +64,25 @@ void Painter::drawFrame()
 
 	for (int i = 0; i < nPhils; i++)
 	{
+
 		move(3 + i * 4, 27);
 		addch(i + '0');
 
+		attron(COLOR_PAIR(i + 1));
 		move(3 + i * 4, 30);
 		addch('[');
 		move(3 + i * 4, 51);
 		addch(']');
+		attroff(COLOR_PAIR(i + 1));
 
-		move(5 + i * 4, 53);
+		attron(COLOR_PAIR(6));
+		move(5 + i * 4, 55);
 		addch('W');
 		addch(i + '0');
 		printw(" Wolny");
+		attroff(COLOR_PAIR(6));
+
+		//refresh();
 	}
 
 	move(8, 0);
@@ -89,6 +95,7 @@ void Painter::drawPhilosophers()
 {
 	for (int i = 0; i < nPhils; i++)
 	{
+		attron(COLOR_PAIR(i + 1));
 		int progress = philosopher[i]->getProgress();
 		int state = philosopher[i]->getState();
 		char c;
@@ -115,6 +122,7 @@ void Painter::drawPhilosophers()
 					addch(' ');
 			}
 		}
+		attroff(COLOR_PAIR(i + 1));
 	}
 }
 
@@ -125,19 +133,23 @@ void Painter::drawForks()
 		if (fork[i]->isBusy())
 		{
 			int philID = fork[i]->getPhilID();
-			move(5 + i * 4, 53);
+			attron(COLOR_PAIR(philID + 1));
+			move(5 + i * 4, 55);
 			addch('W');
 			addch(i + '0');
 			printw("  zabrany przez: ");
 			addch('F');
 			addch(philID + '0');
+			attroff(COLOR_PAIR(philID + 1));
 		}
 		else
 		{
-			move(5 + i * 4, 53);
+			attron(COLOR_PAIR(6));
+			move(5 + i * 4, 55);
 			addch('W');
 			addch(i + '0');
 			printw(" Wolny             ");
+			attroff(COLOR_PAIR(6));
 		}
 	}
 }
