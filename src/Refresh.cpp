@@ -5,12 +5,14 @@
 #include <unistd.h>
 #include <iostream>
 #include <string>
+#include "Philosopher.h"
 
 using namespace std;
+extern int PHILOSOPHERS;
 
-Refresh::Refresh(int n, Philosopher **philosopher, Fork **fork)
+Refresh::Refresh(int nPhils, Philosopher **philosopher, Fork **fork)
 {
-	this->n = n;
+	this->nPhils = nPhils;
 	this->philosopher = philosopher;
 	this->fork = fork;
 
@@ -54,7 +56,7 @@ void Refresh::draw()
 		timeout(125);
 	}
 
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < nPhils; i++)
 		philosopher[i]->setAlive(false);
 
 	endwin();
@@ -66,7 +68,7 @@ void Refresh::drawFrame()
 	move(0, 21);
 	printw("Filozofowie:");
 
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < nPhils; i++)
 	{
 		move(3 + i * 3, 21);
 		addch(i + '0');
@@ -85,7 +87,7 @@ void Refresh::drawFrame()
 
 void Refresh::drawPhilosophers()
 {
-	for (int i = 0; i < n; i++)
+	for (int i = 0; i < nPhils; i++)
 	{
 		int state = philosopher[i]->getState();
 		int id = i;
@@ -153,7 +155,7 @@ void Refresh::drawPhilosophers()
 
 void Refresh::drawPhilosophersDetails()
 {
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < nPhils; i++)
 	{
 		int progress = philosopher[i]->getProgress();
 		int state = philosopher[i]->getState();
@@ -195,7 +197,7 @@ void Refresh::drawForks()
 	int forkX[] = {13, 13, 10, 7, 7};
 	int forkY[] = {3, 5, 6, 5, 3};
 
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < nPhils; i++)
 	{
 		if (fork[i]->isOccupied())
 		{

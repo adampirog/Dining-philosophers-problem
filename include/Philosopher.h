@@ -6,6 +6,7 @@
 #define PHILOSOPHER_H
 
 #include "Fork.h"
+//extern int PHILOSOPHERS;
 
 class Philosopher
 {
@@ -17,14 +18,14 @@ private:
 	double philosophizingMargin;
 	bool alive;
 	int progress;
-	Fork* forkLeft;
-	Fork* forkRight;
+	Fork *forkLeft;
+	Fork *forkRight;
 	atomic<int> state; //0 rozmysla, 1 je, 2 czeka na widelce, 3 ma lewy, 4 ma prawy
 
 public:
 	Philosopher(int id);
 	~Philosopher();
-	
+
 	int getId();
 	void setId(int id);
 	double getEatingTime();
@@ -39,8 +40,8 @@ public:
 	void setAlive(bool alive);
 	int getProgress();
 	void setProgress(int progress);
-	void setForkLeft(Fork* forkLeft);
-	void setForkRight(Fork* forkRight);
+	void setForkLeft(Fork *forkLeft);
+	void setForkRight(Fork *forkRight);
 	int getState();
 	void setState(int state);
 	void lifeCycle();

@@ -8,13 +8,14 @@
 
 using namespace std;
 
-class Refresh{
+class Refresh
+{
 public:
-	int n;
-	Philosopher** philosopher;
-	Fork** fork;
+	int nPhils;
+	Philosopher **philosopher;
+	Fork **fork;
 
-	Refresh(int n, Philosopher** philosopher, Fork** fork);
+	Refresh(int n, Philosopher **philosopher, Fork **fork);
 	~Refresh();
 
 	void init();
