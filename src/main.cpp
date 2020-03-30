@@ -9,7 +9,7 @@ using namespace std;
 int main()
 {
 	//----ZMIANA LICZBY WATKOW
-	int nPhils = 5;
+	int nPhils = 6;
 	//---------------------
 
 	Philosopher **philosophers = new Philosopher *[nPhils];
