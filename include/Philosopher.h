@@ -1,10 +1,13 @@
 #pragma once
 #include "Fork.h"
+#include <random>
 
 class Philosopher
 {
 public:
+	std::mt19937 rng{std::random_device{}()};
 	int philID;
+	double philTimer;
 	double eatingTime;
 	double eatingMargin;
 	double philosophizingTime;
@@ -21,6 +24,7 @@ public:
 
 	int getId();
 	void setId(int id);
+	double getTimer();
 	double getEatingTime();
 	void setEatingTime(double eatingTime);
 	double getPhilosophizingTime();

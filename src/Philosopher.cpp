@@ -7,10 +7,6 @@ using namespace std;
 Philosopher::Philosopher(int philID)
 {
 	this->philID = philID;
-	eatingTime = 5;
-	eatingMargin = 1;
-	philosophizingTime = 5;
-	philosophizingMargin = 1;
 	alive = true;
 	state = 0;
 	progress = 0;
@@ -30,9 +26,9 @@ void Philosopher::setId(int philID)
 	this->philID = philID;
 }
 
-double Philosopher::getEatingTime()
+double Philosopher::getTimer()
 {
-	return eatingTime;
+	return philTimer;
 }
 
 void Philosopher::setEatingTime(double eatingTime)
@@ -111,26 +107,16 @@ void Philosopher::setState(int state)
 //0 filozofuje, 1 je, 2 czeka
 void Philosopher::lifeCycle()
 {
-	srand(time(NULL));
 	while (alive)
 	{
-		int pT = (int)(philosophizingTime * 50000);
-		int pMd = 2 * (int)rand() % ((int)(philosophizingMargin * 50000));
-		int pMu = (int)(philosophizingMargin * 50000);
-
-		int eT = (int)(eatingTime * 50000);
-		int eMd = 2 * (int)rand() % ((int)(eatingMargin * 50000));
-		int eMu = (int)(eatingMargin * 50000);
+		int base = 120000;
+		uniform_int_distribution<int> dist(0, 50000);
+		philTimer = base + dist(rng);
 
 		state = 0;
 		for (int i = 0; i < 21; i++)
 		{
-			float time = pT + pMd - pMu;
-			time /= 1000000;
-			//move(0, 0);
-			//printw("%.6f", time);
-
-			usleep(pT + pMd - pMu);
+			usleep(philTimer);
 			progress++;
 		}
 		progress = 0;
@@ -139,7 +125,7 @@ void Philosopher::lifeCycle()
 		state = 1;
 		for (int i = 0; i < 21; i++)
 		{
-			usleep(eT + eMd - eMu);
+			usleep(philTimer);
 			progress++;
 		}
 		progress = 0;

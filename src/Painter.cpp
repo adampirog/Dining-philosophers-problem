@@ -96,6 +96,7 @@ void Painter::drawPhilosophers()
 		attron(COLOR_PAIR((i % 6) + 1));
 		int progress = philosopher[i]->getProgress();
 		int state = philosopher[i]->getState();
+		double timer = philosopher[i]->getTimer();
 		char c;
 
 		if (state == 0)
@@ -107,6 +108,8 @@ void Painter::drawPhilosophers()
 		{
 			move(3 + i * 4, 31);
 			printw("--------Czeka-------");
+			move(3 + i * 4, 53);
+			printw("%2.3f%s", 00.000, "s");
 		}
 		else
 		{
@@ -115,9 +118,16 @@ void Painter::drawPhilosophers()
 				move(3 + i * 4, 31 + j);
 
 				if (progress > j)
+				{
 					addch(c);
+				}
 				else
+				{
 					addch(' ');
+				}
+				move(3 + i * 4, 53);
+				double timeLeft = ((21 - progress) * timer) / 1000000;
+				printw("%2.3f%s", timeLeft, "s");
 			}
 		}
 		attroff(COLOR_PAIR((i % 6) + 1));
