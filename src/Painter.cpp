@@ -59,7 +59,7 @@ void Painter::drawFrame()
 
 	move(1, 37);
 	printw("Filozofowie");
-	move(1, 60);
+	move(1, 66);
 	printw("Widelce");
 
 	for (int i = 0; i < nPhils; i++)
@@ -76,7 +76,7 @@ void Painter::drawFrame()
 		attroff(COLOR_PAIR((i % 6) + 1));
 
 		attron(COLOR_PAIR(7));
-		move(5 + i * 4, 55);
+		move(5 + i * 4, 59);
 		addch('W');
 		addch(i + '0');
 		printw(" Wolny");
@@ -108,8 +108,8 @@ void Painter::drawPhilosophers()
 		{
 			move(3 + i * 4, 31);
 			printw("--------Czeka-------");
-			move(3 + i * 4, 53);
-			printw("%2.3f%s", 00.000, "s");
+			move(3 + i * 4, 52);
+			printw("%1.2f%s", 0.00, "s");
 		}
 		else
 		{
@@ -125,9 +125,9 @@ void Painter::drawPhilosophers()
 				{
 					addch(' ');
 				}
-				move(3 + i * 4, 53);
+				move(3 + i * 4, 52);
 				double timeLeft = ((21 - progress) * timer) / 1000000;
-				printw("%2.3f%s", timeLeft, "s");
+				printw("%1.2f%s", timeLeft, "s");
 			}
 		}
 		attroff(COLOR_PAIR((i % 6) + 1));
@@ -142,7 +142,7 @@ void Painter::drawForks()
 		{
 			int philID = fork[i]->getPhilID();
 			attron(COLOR_PAIR((philID % 6) + 1));
-			move(5 + i * 4, 55);
+			move(5 + i * 4, 59);
 			addch('W');
 			addch(i + '0');
 			printw("  zabrany przez: ");
@@ -153,7 +153,7 @@ void Painter::drawForks()
 		else
 		{
 			attron(COLOR_PAIR(7));
-			move(5 + i * 4, 55);
+			move(5 + i * 4, 59);
 			addch('W');
 			addch(i + '0');
 			printw(" Wolny             ");

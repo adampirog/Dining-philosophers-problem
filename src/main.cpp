@@ -10,8 +10,6 @@ using namespace std;
 
 int main()
 {
-	printf("%2.3f", 3.234);
-
 	int nPhils = 5;
 	cout << "Podaj liczbę wątków: ";
 	cin >> nPhils;
