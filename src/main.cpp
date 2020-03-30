@@ -3,14 +3,17 @@
 #include "Fork.h"
 #include "Painter.h"
 #include <thread>
+#include <iostream>
+#include <curses.h>
 
 using namespace std;
 
 int main()
 {
-	//----ZMIANA LICZBY WATKOW
-	int nPhils = 6;
-	//---------------------
+
+	int nPhils = 5;
+	cout << "Podaj liczbę wątków: ";
+	cin >> nPhils;
 
 	Philosopher **philosophers = new Philosopher *[nPhils];
 	Fork *fork[nPhils];
@@ -36,6 +39,7 @@ int main()
 	Painter painter = Painter(nPhils, philosophers, fork);
 	painter.draw();
 
+	cout << "Zamykam wątki..." << endl;
 	for (int i = 0; i < nPhils; i++)
 		threads[i].join();
 

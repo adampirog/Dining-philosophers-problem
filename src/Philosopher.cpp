@@ -163,7 +163,7 @@ void Philosopher::takeForks()
 	}
 }
 
-//0 rozmysla, 1 je, 2 czeka na widelce, 3 otrzymal lewy, 4 otrzymal prawy
+//0 filozofuje, 1 je, 2 czeka
 void Philosopher::releaseForks()
 {
 	if (forkLeft->getId() > forkRight->getId())

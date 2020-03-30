@@ -45,7 +45,7 @@ void Painter::draw()
 		drawForks();
 
 		refresh();
-		timeout(125);
+		//timeout(125);
 	}
 
 	for (int i = 0; i < nPhils; i++)
