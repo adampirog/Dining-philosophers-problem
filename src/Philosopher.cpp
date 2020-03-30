@@ -1,79 +1,165 @@
-#include "Philosopher.hpp"
+#include "Philosopher.h"
+#include <iostream>
+#include <cstdlib>
+#include <unistd.h>
+#include <ncurses.h>
+#include <string>
+#include <atomic>
+#include <mutex>
+#include <condition_variable>
 
-extern std::mutex g_lockprint;
-extern bool ready;
-extern std::vector<int> circleX;
-extern std::vector<int> circleY;
+using namespace std;
 
-Philosopher::Philosopher(int ID, Fork &l, Fork &r) : philID(ID), leftFork(l), rightFork(r), life(&Philosopher::dine, this)
-{
-}
-Philosopher::~Philosopher()
-{
-    life.join();
-}
-const char *Philosopher::getName()
-{
-    std::string tmp = "Phil ";
-    tmp = tmp + std::to_string(philID);
-    return tmp.c_str();
-}
-
-void Philosopher::print(bool state)
-{
-    std::lock_guard<std::mutex> cout_lock(g_lockprint);
-    //std::cout << philID << "  " << text << std ::endl;
-    init_pair(1, COLOR_WHITE, COLOR_GREEN);
-    init_pair(2, COLOR_WHITE, COLOR_RED);
-
-    start_color();
-    if (state == false)
-    {
-        attron(COLOR_PAIR(1));
-    }
-    else
-    {
-        attron(COLOR_PAIR(2));
-    }
-
-    move(circleX[philID * 2], circleY[philID * 2]);
-    printw(getName());
-    attroff(COLOR_PAIR(1));
-    refresh();
-    move(0, 0);
+Philosopher::Philosopher(int id){
+	this->id = id;
+	eatingTime = 5;
+	eatingMargin = 1;
+	philosophizingTime = 5;
+	philosophizingMargin = 1;
+	alive = true;
+	state = 0;
+	progress = 0;
 }
 
-void Philosopher::think()
-{
-    static thread_local std::uniform_int_distribution<> wait(1, 6);
-    std::this_thread::sleep_for(std::chrono::milliseconds(wait(randomDevice) * 1000));
+Philosopher::~Philosopher(){
 
-    print(0);
 }
 
-void Philosopher::eat()
-{
-    std::lock(leftFork.mutex, rightFork.mutex);
-
-    std::lock_guard<std::mutex> left_lock(leftFork.mutex, std::adopt_lock);
-    std::lock_guard<std::mutex> right_lock(rightFork.mutex, std::adopt_lock);
-
-    print(1);
-
-    static thread_local std::uniform_int_distribution<> dist(1, 6);
-    std::this_thread::sleep_for(std::chrono::milliseconds(dist(randomDevice) * 1000));
-
-    print(0);
+int Philosopher::getId(){
+	return id;
 }
 
-void Philosopher::dine()
-{
-    while (!ready)
-        ;
+void Philosopher::setId(int id){
+	this->id = id;
+}
 
-    do
-    {
-        think();
-        eat();
-    } while (ready);
+double Philosopher::getEatingTime(){
+	return eatingTime;
+}
+
+void Philosopher::setEatingTime(double eatingTime){
+	this->eatingTime = eatingTime;
+}
+double Philosopher::getPhilosophizingTime(){
+	return philosophizingTime;
+}
+
+void Philosopher::setPhilosophizingTime(double philosophizingTime){
+	this->philosophizingTime = philosophizingTime;
+}
+
+double Philosopher::getEatingMargin(){
+	return eatingTime;
+}
+
+void Philosopher::setEatingMargin(double eatingMargin){
+	this->eatingMargin = eatingMargin;
+}
+double Philosopher::getPhilosophizingMargin(){
+	return philosophizingMargin;
+}
+
+void Philosopher::setPhilosophizingMargin(double philosophizingMargin){
+	this->philosophizingMargin = philosophizingMargin;
+}
+
+bool Philosopher::isAlive(){
+	return alive;
+}
+
+void Philosopher::setAlive(bool alive){
+	this->alive = alive;
+}
+
+int Philosopher::getProgress(){
+	return progress;
+}
+
+void Philosopher::setProgress(int progress){
+	this->progress = progress;
+}
+
+void Philosopher::setForkLeft(Fork* forkLeft){
+	this->forkLeft = forkLeft;
+}
+
+void Philosopher::setForkRight(Fork* forkRight){
+	this->forkRight = forkRight;
+}
+
+int Philosopher::getState(){
+	return state;
+}
+
+void Philosopher::setState(int state){
+	this->state = state;
+}
+
+//0 rozmysla, 1 je, 2 czeka na widelce, 3 otrzymal lewy, 4 otrzymal prawy
+void Philosopher::lifeCycle(){
+	srand(time(NULL));
+	while(alive){
+		int pT = (int)(philosophizingTime * 50000);
+		int pMd = 2 * (int)rand() % ((int)(philosophizingMargin * 50000));
+		int pMu = (int)(philosophizingMargin * 50000);
+
+		int eT = (int)(eatingTime * 50000);
+		int eMd = 2 * (int)rand() % ((int)(eatingMargin * 50000));
+		int eMu = (int)(eatingMargin * 50000);
+
+
+		state = 0;
+		for (int i = 0; i < 20; i++){
+			usleep(pT + pMd - pMu);
+			progress++;
+		}
+		progress = 0;
+		state = 2;
+		takeForks();
+		state = 1;
+		for (int i = 0; i < 20; i++){
+			usleep(eT + eMd - eMu);
+			progress++;
+		}
+		progress = 0;
+		releaseForks();
+
+		// state = 0;
+		// usleep((int)(philosophizingTime * 1000000) + 2 * (int)rand() % ((int)(philosophizingMargin * 1000000)) - (int)(philosophizingMargin * 1000000));
+		// state = 2;
+		// takeForks();
+		// state = 1;
+		// usleep((int)(eatingTime * 1000000) + 2 * (int)rand() % ((int)(eatingMargin * 1000000)) - (int)(eatingMargin * 1000000));
+		// releaseForks();
+	}
+
+	return;
+}
+
+//0 rozmysla, 1 je, 2 czeka na widelce, 3 otrzymal lewy, 4 otrzymal prawy
+void Philosopher::takeForks(){
+	if(forkLeft->getId() < forkRight->getId()){
+		forkLeft->setOccupied(true, id);
+		forkLeft->setState(3);
+		forkRight->setOccupied(true, id);
+	}
+	else{
+		forkRight->setOccupied(true, id);
+		forkRight->setState(4);
+		forkLeft->setOccupied(true, id);
+	}
+}
+
+//0 rozmysla, 1 je, 2 czeka na widelce, 3 otrzymal lewy, 4 otrzymal prawy
+void Philosopher::releaseForks(){
+	if(forkLeft->getId() > forkRight->getId()){
+		forkLeft->setOccupied(false, id);
+		forkLeft->setState(4);
+		forkRight->setOccupied(false, id);
+	}
+	else{
+		forkRight->setOccupied(false, id);
+		forkRight->setState(3);
+		forkLeft->setOccupied(false, id);
+	}
 }
