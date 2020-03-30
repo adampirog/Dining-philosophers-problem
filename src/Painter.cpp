@@ -1,16 +1,10 @@
-#include "Refresh.h"
-#include <cstdlib>
+#include "Painter.h"
 #include "ncurses.h"
-#include <thread>
-#include <unistd.h>
-#include <iostream>
-#include <string>
-#include "Philosopher.h"
 
 using namespace std;
 extern int PHILOSOPHERS;
 
-Refresh::Refresh(int nPhils, Philosopher **philosopher, Fork **fork)
+Painter::Painter(int nPhils, Philosopher **philosopher, Fork **fork)
 {
 	this->nPhils = nPhils;
 	this->philosopher = philosopher;
@@ -22,12 +16,12 @@ Refresh::Refresh(int nPhils, Philosopher **philosopher, Fork **fork)
 	init();
 }
 
-Refresh::~Refresh()
+Painter::~Painter()
 {
 	endwin();
 }
 
-void Refresh::init()
+void Painter::init()
 {
 	start_color();
 	init_pair(1, COLOR_WHITE, COLOR_BLACK);
@@ -40,7 +34,7 @@ void Refresh::init()
 	//bkgd(COLOR_PAIR(1));
 }
 
-void Refresh::draw()
+void Painter::draw()
 {
 	int c;
 	nodelay(stdscr, TRUE);
@@ -61,7 +55,7 @@ void Refresh::draw()
 	endwin();
 }
 
-void Refresh::drawFrame()
+void Painter::drawFrame()
 {
 
 	move(1, 15);
@@ -91,7 +85,7 @@ void Refresh::drawFrame()
 	printw("'#' - filozofowanie");
 }
 
-void Refresh::drawPhilosophers()
+void Painter::drawPhilosophers()
 {
 	for (int i = 0; i < nPhils; i++)
 	{
@@ -124,66 +118,13 @@ void Refresh::drawPhilosophers()
 	}
 }
 
-void Refresh::drawForks()
+void Painter::drawForks()
 {
-
-	/*
 	for (int i = 0; i < nPhils; i++)
 	{
-		int state = philosopher[i]->getState();
-		int id = i;
-		int left;
-		int right;
-
-		if (state == 0)
+		if (fork[i]->isBusy())
 		{
-			left = 0;
-			right = 0;
-		}
-		else if (state == 1)
-		{
-			left = 2;
-			right = 2;
-		}
-		else if (state == 2)
-		{
-			left = 1;
-			right = 1;
-		}
-		else if (state == 3)
-		{
-			left = 1;
-			right = 2;
-		}
-		else
-		{
-			left = 2;
-			right = 1;
-		}
-
-		//0 nie ma, 1 czeka, 2 ma
-		move(3 + i * 4, 52);
-		if (left == 0)
-			addch(' ');
-		else if (left == 1)
-			addch('?');
-		else
-			addch('Y');
-
-		move(3 + i * 4, 54);
-		if (right == 0)
-			addch(' ');
-		else if (right == 1)
-			addch('?');
-		else
-			addch('Y');
-	}
-*/
-	for (int i = 0; i < nPhils; i++)
-	{
-		if (fork[i]->isOccupied())
-		{
-			int philID = fork[i]->getPhilisopherId();
+			int philID = fork[i]->getPhilID();
 			move(5 + i * 4, 53);
 			addch('W');
 			addch(i + '0');

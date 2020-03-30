@@ -1,10 +1,7 @@
-#ifndef FORK_H
-#define FORK_H
+#pragma once
 
-#include <string>
 #include <atomic>
 #include <mutex>
-#include <ncurses.h>
 #include <condition_variable>
 
 using namespace std;
@@ -12,25 +9,19 @@ using namespace std;
 class Fork
 {
 private:
-	int id;
-	atomic<bool> occupied;
-	int philosopherId;
-	int state;
+	int forkID;
+	atomic<bool> busy;
+	int philID;
 
 	mutex lock;
-	condition_variable cvOccupied;
+	condition_variable cv;
 
 public:
 	Fork(int id);
-	~Fork();
 	int getId();
 	void setId(int id);
-	void setOccupied(bool occupied, int id);
-	bool isOccupied();
-	void setPhilosopherId(int philosopherID);
-	int getPhilisopherId();
-	void setState(int state);
-	int getState();
+	void setBusy(bool occupied, int id);
+	bool isBusy();
+	void setPhilID(int philosopherID);
+	int getPhilID();
 };
-
-#endif //FORK_H

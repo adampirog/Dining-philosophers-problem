@@ -1,18 +1,11 @@
 #include "Philosopher.h"
-#include <iostream>
-#include <cstdlib>
 #include <unistd.h>
-#include <ncurses.h>
-#include <string>
-#include <atomic>
-#include <mutex>
-#include <condition_variable>
 
 using namespace std;
 
-Philosopher::Philosopher(int id)
+Philosopher::Philosopher(int philID)
 {
-	this->id = id;
+	this->philID = philID;
 	eatingTime = 5;
 	eatingMargin = 1;
 	philosophizingTime = 5;
@@ -28,12 +21,12 @@ Philosopher::~Philosopher()
 
 int Philosopher::getId()
 {
-	return id;
+	return philID;
 }
 
-void Philosopher::setId(int id)
+void Philosopher::setId(int philID)
 {
-	this->id = id;
+	this->philID = philID;
 }
 
 double Philosopher::getEatingTime()
@@ -145,33 +138,22 @@ void Philosopher::lifeCycle()
 		}
 		progress = 0;
 		releaseForks();
-
-		// state = 0;
-		// usleep((int)(philosophizingTime * 1000000) + 2 * (int)rand() % ((int)(philosophizingMargin * 1000000)) - (int)(philosophizingMargin * 1000000));
-		// state = 2;
-		// takeForks();
-		// state = 1;
-		// usleep((int)(eatingTime * 1000000) + 2 * (int)rand() % ((int)(eatingMargin * 1000000)) - (int)(eatingMargin * 1000000));
-		// releaseForks();
 	}
 
 	return;
 }
 
-//0 rozmysla, 1 je, 2 czeka na widelce, 3 otrzymal lewy, 4 otrzymal prawy
 void Philosopher::takeForks()
 {
 	if (forkLeft->getId() < forkRight->getId())
 	{
-		forkLeft->setOccupied(true, id);
-		forkLeft->setState(3);
-		forkRight->setOccupied(true, id);
+		forkLeft->setBusy(true, philID);
+		forkRight->setBusy(true, philID);
 	}
 	else
 	{
-		forkRight->setOccupied(true, id);
-		forkRight->setState(4);
-		forkLeft->setOccupied(true, id);
+		forkRight->setBusy(true, philID);
+		forkLeft->setBusy(true, philID);
 	}
 }
 
@@ -180,14 +162,12 @@ void Philosopher::releaseForks()
 {
 	if (forkLeft->getId() > forkRight->getId())
 	{
-		forkLeft->setOccupied(false, id);
-		forkLeft->setState(4);
-		forkRight->setOccupied(false, id);
+		forkLeft->setBusy(false, philID);
+		forkRight->setBusy(false, philID);
 	}
 	else
 	{
-		forkRight->setOccupied(false, id);
-		forkRight->setState(3);
-		forkLeft->setOccupied(false, id);
+		forkRight->setBusy(false, philID);
+		forkLeft->setBusy(false, philID);
 	}
 }

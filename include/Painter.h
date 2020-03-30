@@ -1,22 +1,17 @@
-#ifndef REFRESH_H
-#define REFRESH_H
-
-#include <cstdlib>
-#include <thread>
-#include <unistd.h>
+#pragma once
 #include "Philosopher.h"
 
 using namespace std;
 
-class Refresh
+class Painter
 {
 public:
 	int nPhils;
 	Philosopher **philosopher;
 	Fork **fork;
 
-	Refresh(int n, Philosopher **philosopher, Fork **fork);
-	~Refresh();
+	Painter(int n, Philosopher **philosopher, Fork **fork);
+	~Painter();
 
 	void init();
 	void draw();
@@ -26,5 +21,3 @@ public:
 	void drawForks();
 	void drawForksDetails();
 };
-
-#endif // REFRESH_H

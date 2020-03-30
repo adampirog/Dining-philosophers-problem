@@ -1,70 +1,55 @@
 #include "Fork.h"
-#include <string>
 
 using namespace std;
 
 Fork::Fork(int id)
 {
-	this->id = id;
-	this->occupied = false;
-	this->philosopherId = 0;
-}
-
-Fork::~Fork()
-{
+	this->forkID = id;
+	this->busy = false;
+	this->philID = -1;
 }
 
 int Fork::getId()
 {
-	return id;
+	return forkID;
 }
 
-void Fork::setId(int id)
+void Fork::setId(int forkID)
 {
-	this->id = id;
+	this->forkID = forkID;
 }
 
-void Fork::setOccupied(bool occupied, int philosopherId)
+void Fork::setBusy(bool busy, int philID)
 {
-	if (occupied)
+	if (busy)
 	{
 		unique_lock<mutex> l(lock);
-		cvOccupied.wait(l, [this]() { return this->occupied == false; });
-		this->philosopherId = philosopherId;
-		this->occupied = occupied;
+		cv.wait(l, [this]() { return this->busy == false; });
+		this->philID = philID;
+		this->busy = busy;
 		l.unlock();
 	}
 	else
 	{
 		unique_lock<mutex> l(lock);
-		this->philosopherId = -1;
-		this->occupied = occupied;
+		this->philID = -1;
+		this->busy = busy;
 		l.unlock();
-		cvOccupied.notify_all();
+		cv.notify_all();
 	}
 }
 
-bool Fork::isOccupied()
+bool Fork::isBusy()
 {
-	return occupied;
+	return busy;
 }
 
-void Fork::setPhilosopherId(int philosopherId)
+void Fork::setPhilID(int philID)
 {
-	this->philosopherId = philosopherId;
+	this->philID = philID;
 }
 
-int Fork::getPhilisopherId()
+int Fork::getPhilID()
 {
-	return philosopherId;
-}
-
-void Fork::setState(int state)
-{
-	this->state = state;
-}
-
-int Fork::getState()
-{
-	return state;
+	return philID;
 }

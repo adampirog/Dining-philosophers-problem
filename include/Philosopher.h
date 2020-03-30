@@ -1,17 +1,10 @@
-#include <string>
-#include <atomic>
-#include <mutex>
-
-#ifndef PHILOSOPHER_H
-#define PHILOSOPHER_H
-
+#pragma once
 #include "Fork.h"
-//extern int PHILOSOPHERS;
 
 class Philosopher
 {
 public:
-	int id;
+	int philID;
 	double eatingTime;
 	double eatingMargin;
 	double philosophizingTime;
@@ -20,7 +13,7 @@ public:
 	int progress;
 	Fork *forkLeft;
 	Fork *forkRight;
-	atomic<int> state; //0 rozmysla, 1 je, 2 czeka na widelce, 3 ma lewy, 4 ma prawy
+	atomic<int> state; //0 filozofuje, 1 je, 2 czeka
 
 public:
 	Philosopher(int id);
@@ -48,5 +41,3 @@ public:
 	void takeForks();
 	void releaseForks();
 };
-
-#endif // PHILOSOPHER_H
