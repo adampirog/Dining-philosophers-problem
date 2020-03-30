@@ -10,7 +10,7 @@
 
 class Philosopher
 {
-private:
+public:
 	int id;
 	double eatingTime;
 	double eatingMargin;

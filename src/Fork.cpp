@@ -3,32 +3,39 @@
 
 using namespace std;
 
-Fork::Fork(int id){
+Fork::Fork(int id)
+{
 	this->id = id;
 	this->occupied = false;
 	this->philosopherId = 0;
 }
 
-Fork::~Fork(){
+Fork::~Fork()
+{
 }
 
-int Fork::getId(){
+int Fork::getId()
+{
 	return id;
 }
 
-void Fork::setId(int id){
+void Fork::setId(int id)
+{
 	this->id = id;
 }
 
-void Fork::setOccupied(bool occupied, int philosopherId){
-	if(occupied){
+void Fork::setOccupied(bool occupied, int philosopherId)
+{
+	if (occupied)
+	{
 		unique_lock<mutex> l(lock);
-		cvOccupied.wait(l, [this](){return this->occupied == false;});
+		cvOccupied.wait(l, [this]() { return this->occupied == false; });
 		this->philosopherId = philosopherId;
 		this->occupied = occupied;
 		l.unlock();
 	}
-	else{
+	else
+	{
 		unique_lock<mutex> l(lock);
 		this->philosopherId = -1;
 		this->occupied = occupied;
@@ -37,22 +44,27 @@ void Fork::setOccupied(bool occupied, int philosopherId){
 	}
 }
 
-bool Fork::isOccupied(){
+bool Fork::isOccupied()
+{
 	return occupied;
 }
 
-void Fork::setPhilosopherId(int philosopherId){
+void Fork::setPhilosopherId(int philosopherId)
+{
 	this->philosopherId = philosopherId;
 }
 
-int Fork::getPhilisopherId(){
+int Fork::getPhilisopherId()
+{
 	return philosopherId;
 }
 
-void Fork::setState(int state){
+void Fork::setState(int state)
+{
 	this->state = state;
 }
 
-int Fork::getState(){
+int Fork::getState()
+{
 	return state;
 }

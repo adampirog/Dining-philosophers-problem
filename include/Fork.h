@@ -4,11 +4,13 @@
 #include <string>
 #include <atomic>
 #include <mutex>
+#include <ncurses.h>
 #include <condition_variable>
 
 using namespace std;
 
-class Fork{
+class Fork
+{
 private:
 	int id;
 	atomic<bool> occupied;

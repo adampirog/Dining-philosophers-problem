@@ -48,9 +48,8 @@ void Refresh::draw()
 	while ((c = getch()) != 27)
 	{
 		drawFrame();
-		//drawPhilosophers();
-		drawPhilosophersDetails();
-		//drawForks();
+		drawPhilosophers();
+		drawForks();
 
 		refresh();
 		timeout(125);
@@ -65,18 +64,25 @@ void Refresh::draw()
 void Refresh::drawFrame()
 {
 
-	move(0, 21);
+	move(1, 15);
 	printw("Filozofowie:");
+	move(1, 50);
+	printw("Widelce:");
 
 	for (int i = 0; i < nPhils; i++)
 	{
-		move(3 + i * 3, 21);
+		move(3 + i * 4, 27);
 		addch(i + '0');
 
-		move(3 + i * 3, 24);
+		move(3 + i * 4, 30);
 		addch('[');
-		move(3 + i * 3, 45);
+		move(3 + i * 4, 51);
 		addch(']');
+
+		move(5 + i * 4, 53);
+		addch('W');
+		addch(i + '0');
+		printw(" Wolny");
 	}
 
 	move(8, 0);
@@ -87,6 +93,41 @@ void Refresh::drawFrame()
 
 void Refresh::drawPhilosophers()
 {
+	for (int i = 0; i < nPhils; i++)
+	{
+		int progress = philosopher[i]->getProgress();
+		int state = philosopher[i]->getState();
+		char c;
+
+		if (state == 0)
+			c = '#';
+		else
+			c = '+';
+
+		if (state == 2)
+		{
+			move(3 + i * 4, 31);
+			printw("--------Czeka-------");
+		}
+		else
+		{
+			for (int j = 0; j < 20; j++)
+			{
+				move(3 + i * 4, 31 + j);
+
+				if (progress > j)
+					addch(c);
+				else
+					addch(' ');
+			}
+		}
+	}
+}
+
+void Refresh::drawForks()
+{
+
+	/*
 	for (int i = 0; i < nPhils; i++)
 	{
 		int state = philosopher[i]->getState();
@@ -120,103 +161,42 @@ void Refresh::drawPhilosophers()
 			right = 1;
 		}
 
-		int philosophersSeatsX[] = {10, 15, 13, 7, 5};
-		int philosophersSeatsY[] = {2, 4, 7, 7, 4};
-
-		char philosophersLeftHandsView[] = {'\\', '-', '\\', '\\', '-'};
-		int philosophersLeftHandsX[] = {11, 15, 12, 6, 5};
-		int philosophersLeftHandsY[] = {2, 5, 7, 7, 3};
-
-		int philosophersRightHandsX[] = {9, 15, 14, 8, 5};
-		int philosophersRightHandsY[] = {2, 3, 7, 7, 5};
-		char philosophersRightHandsView[] = {'/', '-', '/', '/', '-'};
-
-		move(philosophersSeatsY[id], philosophersSeatsX[id]);
-		addch('O');
-
 		//0 nie ma, 1 czeka, 2 ma
-		move(philosophersLeftHandsY[id], philosophersLeftHandsX[id]);
+		move(3 + i * 4, 52);
 		if (left == 0)
 			addch(' ');
 		else if (left == 1)
-			addch(philosophersLeftHandsView[id]);
+			addch('?');
 		else
 			addch('Y');
 
-		move(philosophersRightHandsY[id], philosophersRightHandsX[id]);
+		move(3 + i * 4, 54);
 		if (right == 0)
 			addch(' ');
 		else if (right == 1)
-			addch(philosophersRightHandsView[id]);
+			addch('?');
 		else
 			addch('Y');
 	}
-}
-
-void Refresh::drawPhilosophersDetails()
-{
-	for (int i = 0; i < nPhils; i++)
-	{
-		int progress = philosopher[i]->getProgress();
-		int state = philosopher[i]->getState();
-		char c;
-
-		if (state == 0)
-			c = '#';
-		else
-			c = '+';
-
-		if (state == 2)
-		{
-			move(3 + i * 3, 25);
-			printw("Czeka na widelce   ");
-		}
-		else
-		{
-			for (int j = 0; j < 20; j++)
-			{
-				move(3 + i * 3, 25 + j);
-
-				if (progress > j)
-					addch(c);
-				else
-					addch(' ');
-			}
-		}
-	}
-}
-
-void Refresh::drawForks()
-{
-	int philosophersLeftHandsX[] = {11, 15, 12, 6, 5};
-	int philosophersLeftHandsY[] = {2, 5, 7, 7, 3};
-
-	int philosophersRightHandsX[] = {9, 15, 14, 8, 5};
-	int philosophersRightHandsY[] = {2, 3, 7, 7, 5};
-
-	int forkX[] = {13, 13, 10, 7, 7};
-	int forkY[] = {3, 5, 6, 5, 3};
-
+*/
 	for (int i = 0; i < nPhils; i++)
 	{
 		if (fork[i]->isOccupied())
 		{
-			int philId = fork[i]->getPhilisopherId();
-			int forkId = fork[i]->getId();
-
-			move(forkY[i], forkX[i]);
-			addch(' ');
-
-			if (philId == forkId)
-				move(philosophersLeftHandsY[philId], philosophersLeftHandsX[philId]);
-			else
-				move(philosophersRightHandsY[philId], philosophersRightHandsX[philId]);
-			addch('Y');
+			int philID = fork[i]->getPhilisopherId();
+			move(5 + i * 4, 53);
+			addch('W');
+			addch(i + '0');
+			printw("  zabrany przez: ");
+			addch('F');
+			addch(philID + '0');
 		}
 		else
 		{
-			move(forkY[i], forkX[i]);
-			addch('Y');
+			move(5 + i * 4, 53);
+			addch('W');
+			addch(i + '0');
+			printw(" Wolny             ");
 		}
 	}
 }
