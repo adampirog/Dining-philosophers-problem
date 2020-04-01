@@ -31,39 +31,6 @@ double Philosopher::getTimer()
 	return philTimer;
 }
 
-void Philosopher::setEatingTime(double eatingTime)
-{
-	this->eatingTime = eatingTime;
-}
-double Philosopher::getPhilosophizingTime()
-{
-	return philosophizingTime;
-}
-
-void Philosopher::setPhilosophizingTime(double philosophizingTime)
-{
-	this->philosophizingTime = philosophizingTime;
-}
-
-double Philosopher::getEatingMargin()
-{
-	return eatingTime;
-}
-
-void Philosopher::setEatingMargin(double eatingMargin)
-{
-	this->eatingMargin = eatingMargin;
-}
-double Philosopher::getPhilosophizingMargin()
-{
-	return philosophizingMargin;
-}
-
-void Philosopher::setPhilosophizingMargin(double philosophizingMargin)
-{
-	this->philosophizingMargin = philosophizingMargin;
-}
-
 bool Philosopher::isAlive()
 {
 	return alive;
@@ -105,7 +72,7 @@ void Philosopher::setState(int state)
 }
 
 //0 filozofuje, 1 je, 2 czeka
-void Philosopher::lifeCycle()
+void Philosopher::life()
 {
 	while (alive)
 	{
@@ -149,7 +116,6 @@ void Philosopher::takeForks()
 	}
 }
 
-//0 filozofuje, 1 je, 2 czeka
 void Philosopher::releaseForks()
 {
 	if (forkLeft->getId() > forkRight->getId())

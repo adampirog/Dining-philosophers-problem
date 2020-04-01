@@ -32,7 +32,7 @@ int main()
 		else
 			philosophers[i]->setForkLeft(fork[i - 1]);
 
-		threads[i] = thread(&Philosopher::lifeCycle, philosophers[i]);
+		threads[i] = thread(&Philosopher::life, philosophers[i]);
 	}
 
 	Painter painter = Painter(nPhils, philosophers, fork);
