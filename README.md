@@ -14,3 +14,5 @@ The problem is how to design a discipline of behavior (a concurrent algorithm) s
 This solution to the problem is the one originally proposed by Dijkstra. It assigns a partial order to the resources (the forks, in this case), and establishes the convention that all resources will be requested in order, and that no two resources unrelated by order will ever be used by a single unit of work at the same time.
  
  Solution is achieved using C++11 threads, mutexes, lock managers and conditional variables
+
+ [Source](https://en.wikipedia.org/wiki/Dining_philosophers_problem)
