@@ -10,6 +10,7 @@ LIBRARIES	:=
 EXECUTABLE	:= main
 
 
+
 all: $(BIN)/$(EXECUTABLE)
 
 run: clean all
@@ -17,7 +18,7 @@ run: clean all
 	./$(BIN)/$(EXECUTABLE)
 
 $(BIN)/$(EXECUTABLE): $(SRC)/*.cpp
-	$(CXX) $(CXX_FLAGS) -I$(INCLUDE) -L$(LIB) $^ -o $@ $(LIBRARIES) -lncurses
+	$(CXX) $(CXX_FLAGS) -I$(INCLUDE) -L$(LIB) $^ -o $@ $(LIBRARIES) -lncurses 
 
 clean:
 	-rm $(BIN)/*
