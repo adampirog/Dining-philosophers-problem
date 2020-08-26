@@ -16,3 +16,7 @@ This solution to the problem is the one originally proposed by Dijkstra. It assi
  Solution is achieved using C++11 threads, mutexes, lock managers and conditional variables
 
  [Source](https://en.wikipedia.org/wiki/Dining_philosophers_problem)
+
+ ## Screenshots
+
+![](screenshots/sc1.png)
